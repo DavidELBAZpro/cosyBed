@@ -20,12 +20,13 @@ import { ClientsModule } from './clients/clients.module'
     //   entities: [], // Vous devriez lister ici vos entités
     //   synchronize: true,
     // }),
-    MongooseModule.forRoot('mongodb://localhost:27017/db'),
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017/db_ecommerce_app', {
+      serverSelectionTimeoutMS: 5000, // Réduisez le temps d'attente pour le test
+    }),
     ProductsModule,
     ClientsModule,
     // autres modules si nécessaire
   ],
-
   controllers: [AppController, WelcomeController],
   providers: [AppService],
 })
