@@ -3,12 +3,14 @@
     <h1 class="text-2xl font-bold mb-6">Produits</h1>
     <p v-if="isError">Error: {{ error?.message }}</p>
     <p v-if="isLoading">Chargement...</p>
-    <div v-if="!isLoading && !isError">
-      <ProductCard
+    <div v-if="!isLoading && !isError" class="flex flex-wrap -m-2">
+      <div
         v-for="product in products"
         :key="product._id"
-        :product="product"
-      />
+        class="p-2 w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
+      >
+        <ProductCard :product="product" />
+      </div>
     </div>
   </div>
 </template>
