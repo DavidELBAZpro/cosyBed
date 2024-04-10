@@ -1,8 +1,7 @@
-
 <template>
   <div>
-    <h1>{{ msg }}</h1> <!-- Existant msg -->
-    <p>{{ message }}</p> <!-- Message du serveur NestJS -->
+    <p>{{ message }}</p>
+    <!-- Message du serveur NestJS -->
     <p v-if="error">Error: {{ error.message }}</p>
     <p v-if="isLoading">Loading...</p>
 
@@ -16,31 +15,33 @@
 import { computed, ref } from 'vue'
 import { QueryKey, useQuery } from '@tanstack/vue-query'
 
-defineProps<{ msg: string }>()
-
 interface MessageResponse {
-  message: string;
+  message: string
 }
 const count = ref(101)
 
 // Fonction pour récupérer le message depuis le serveur
 const fetchMessage = async (): Promise<MessageResponse> => {
-  const response = await fetch('http://localhost:1605/welcome');
+  const response = await fetch('http://localhost:1605/welcome')
   if (!response.ok) {
-    throw new Error('Network response was not ok');
+    throw new Error('Network response was not ok')
   }
-  const data : MessageResponse = await response.json()
-  return data;
+  const data: MessageResponse = await response.json()
+  return data
 }
 
 // Utilisation de Vue Query pour gérer la requête
-const { data, error, isLoading } = useQuery<MessageResponse, Error, MessageResponse, QueryKey>({
+const { data, error, isLoading } = useQuery<
+  MessageResponse,
+  Error,
+  MessageResponse,
+  QueryKey
+>({
   queryKey: ['welcomeMessage'],
   queryFn: fetchMessage,
-});
-const message = computed(() => data.value?.message);
+})
+const message = computed(() => data.value?.message)
 </script>
-
 
 <style scoped>
 .read-the-docs {

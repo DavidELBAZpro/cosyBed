@@ -1,69 +1,43 @@
 <template>
   <div class="p-6">
     <h1 class="text-2xl font-bold mb-6">Produits</h1>
-    <div v-if="query.isLoading" class="text-gray-500">Chargement...</div>
-    <div v-else-if="query.isError" class="text-red-500">
-      Une erreur est survenue.
-    </div>
-    <div v-else>
-      <Product
+    <p v-if="isError">Error: {{ error?.message }}</p>
+    <p v-if="isLoading">Chargement...</p>
+    <div v-if="!isLoading && !isError">
+      <ProductCard
         v-for="product in products"
-        :key="product.id"
+        :key="product._id"
         :product="product"
       />
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
-import { useQuery, UseQueryOptions } from '@tanstack/vue-query'
-import Product from '../components/Product.vue'
+<script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query'
+import ProductCard from '../components/ProductCard.vue'
+import { ProductInterface } from '../components/ProductCard.vue'
 
-interface Product {
-  id: number
-  name: string
-  description: string
-  price: number
+const fetchProducts = async (): Promise<ProductInterface[]> => {
+  const response = await fetch('http://localhost:1605/products')
+  if (!response.ok) {
+    throw new Error('Network response was not ok')
+  }
+  const data = await response.json()
+  return data
 }
 
-export default defineComponent({
-  name: 'ProductsPage',
-  components: {
-    Product,
-  },
-  setup() {
-    const fetchProducts = async (): Promise<Product[]> => {
-      const response = await fetch('http://localhost:1605/products')
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-      const data = await response.json()
-      console.table('response HERE', data)
-      return data
-    }
-
-    const queryKey = ['products']
-    const queryOptions: UseQueryOptions<Product[], Error> = {
-      queryKey: queryKey,
-      queryFn: fetchProducts,
-    }
-
-    const query = useQuery<Product[], Error>(queryOptions)
-
-    const products = ref<Product[]>([])
-    onMounted(async () => {
-      if (query.data.value) {
-        products.value = query.data.value
-      }
-    })
-    console.log(query.isLoading)
-
-    return { query, products }
-  },
+const {
+  data: products,
+  error,
+  isError,
+  isLoading,
+} = useQuery<ProductInterface[], Error>({
+  queryKey: ['products'],
+  queryFn: fetchProducts,
 })
 </script>
 
 <style scoped>
-/* styles here */
+/* Vos styles ici */
 </style>

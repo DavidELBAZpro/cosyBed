@@ -4,7 +4,7 @@
     v-if="product"
   >
     <h2 class="text-xl font-semibold">{{ product.name }}</h2>
-    <p class="text-sm">ID: {{ product.id }}</p>
+    <p class="text-sm">ID: {{ product._id }}</p>
     <p>{{ product.description }}</p>
     <p class="font-bold">Price: ${{ product.price.toFixed(2) }}</p>
   </div>
@@ -13,9 +13,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-// Définition de l'interface pour le type Product
-interface Product {
-  id: number
+export interface ProductInterface {
+  _id: number
   name: string
   description: string
   price: number
@@ -25,7 +24,7 @@ export default defineComponent({
   name: 'Product',
   props: {
     product: {
-      type: Object as () => Product,
+      type: Object as () => ProductInterface,
       required: true,
     },
   },
