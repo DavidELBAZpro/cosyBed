@@ -6,26 +6,33 @@ import { ClientSchema, ClientDocument } from './clients.schema'
 
 @Injectable()
 export class ClientsService {
-  // constructor(
-  //   @InjectModel('Client')
-  //   private readonly clientsModel: Model<ClientDocument>,
-  // ) {}
-  // getClientById = async (id: number): Promise<Client | null> => {
-  //   const client: Client | null = await this.clientsModel.findById(id).exec()
-  //   if (!client) {
-  //     return null
-  //   }
-  //   return client
-  // }
-  // getClientByNameOrEmail = async (str: string): Promise<Client | null> => {
-  //   let client: Client | null = null
-  //   if (str.includes('@')) {
-  //     // Recherche par email
-  //     client = await this.clientsModel.findOne({ email: str }).exec()
-  //   } else {
-  //     // Recherche par nom
-  //     client = await this.clientsModel.findOne({ name: str }).exec()
-  //   }
-  //   return client
-  // }
+  constructor(
+    @InjectModel('Client')
+    private readonly clientsModel: Model<ClientDocument>,
+  ) {}
+
+  getAllClients = async (): Promise<Client[]> => {
+    const clients = await this.clientsModel.find().exec()
+    return clients.map((client) => client.toObject() as Client)
+  }
+  getClientById = async (id: string): Promise<Client | null> => {
+    const client: Client | null = await this.clientsModel.findById(id).exec()
+    return client
+  }
+
+  async getClientsByNameOrEmail(str: string): Promise<Client[]> {
+    // Création d'une expression régulière pour une recherche "contient" insensible à la casse
+    const searchRegex = new RegExp(str, 'i')
+    console.log('searchRegex', searchRegex)
+
+    const clients = await this.clientsModel
+      .find({
+        $or: [
+          { name: { $regex: searchRegex } },
+          { email: { $regex: searchRegex } },
+        ],
+      })
+      .exec()
+    return clients
+  }
 }
