@@ -5,7 +5,6 @@ import { Client } from './clients.model'
 export type ClientDocument = Client & Document
 
 class ClientClass {
-  id: number
   name: string
   email: string
   phoneNumber?: string
