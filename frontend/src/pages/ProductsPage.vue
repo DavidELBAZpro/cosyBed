@@ -9,7 +9,7 @@
       </svg>
       Retour
     </button>
-    <h1 class="text-2xl font-bold mb-6">Produits</h1>
+    <h1 class="text-2xl text-cyan-800 font-bold mb-6">Produits</h1>
     <p v-if="isError">Error: {{ error?.message }}</p>
     <p v-if="isLoading">
         <div role="status">
