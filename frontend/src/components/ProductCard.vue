@@ -5,6 +5,8 @@
     <a href="#">
       <img class="rounded-t-lg" :src="product.imageUrl" :alt="product.name" />
     </a>
+    <div class="border-t border-gray-200 dark:border-gray-600"></div>
+    <!-- Bordure ajoutée ici -->
     <div class="p-5">
       <a href="#">
         <h5
@@ -38,7 +40,10 @@
             />
           </svg>
         </a>
-        <p class="font-normal text-gray-700 dark:text-gray-400">
+        <p
+          :title="product.price.toString() + ' €'"
+          class="font-bold text-gray-700 dark:text-gray-400"
+        >
           {{ product.price.toFixed(2) }} €
         </p>
       </div>

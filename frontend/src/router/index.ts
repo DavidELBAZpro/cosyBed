@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HelloWorld from '../components/HelloWorld.vue'
 import ProductsPage from '../pages/ProductsPage.vue'
+import WelcomePage from '../pages/WelcomePage.vue'
 
 const routes = [
   {
@@ -13,7 +14,12 @@ const routes = [
     name: 'ProductsPage',
     component: ProductsPage,
   },
-  // Ajoutez d'autres routes ici
+  {
+    path: '/',
+    name: 'WelcomePage',
+    component: WelcomePage,
+  },
+  // Ajouter d'autres routes ici
 ]
 
 const router = createRouter({
