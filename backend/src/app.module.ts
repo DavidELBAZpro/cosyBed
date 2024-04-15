@@ -6,6 +6,8 @@ import { AppService } from './app.service'
 import { WelcomeController } from './welcome/welcome.controller'
 import { ProductsModule } from './products/products.module'
 import { ClientsModule } from './clients/clients.module'
+import { NomDuServiceService } from './nom-du-service/nom-du-service.service';
+import { FileUploadService } from './file-upload/file-upload.service';
 
 @Module({
   imports: [
@@ -28,6 +30,6 @@ import { ClientsModule } from './clients/clients.module'
     // autres modules si nécessaire
   ],
   controllers: [AppController, WelcomeController],
-  providers: [AppService],
+  providers: [AppService, NomDuServiceService, FileUploadService],
 })
 export class AppModule {}
