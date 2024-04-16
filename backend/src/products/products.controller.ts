@@ -38,7 +38,7 @@ export class ProductsController {
     @Body() productData: { name: string; description: string; price: number },
   ) {
     const imageUrl = file.location // URL de l'image stockée sur S3
-    const product = await this.ProductsService.addProduct({
+    const product = await this.fileUploadService.addProduct({
       ...productData,
       imageUrl,
     })
