@@ -22,7 +22,7 @@ export class ProductsController {
   ) {}
 
   @Get()
-  getAllClients(): Promise<Product[]> {
+  getAllProducts(): Promise<Product[]> {
     return this.productService.getAllProducts()
   }
 
