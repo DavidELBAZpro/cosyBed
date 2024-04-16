@@ -6,8 +6,10 @@ import { AppService } from './app.service'
 import { WelcomeController } from './welcome/welcome.controller'
 import { ProductsModule } from './products/products.module'
 import { ClientsModule } from './clients/clients.module'
-import { NomDuServiceService } from './nom-du-service/nom-du-service.service';
-import { FileUploadService } from './file-upload/file-upload.service';
+import { NomDuServiceService } from './nom-du-service/nom-du-service.service'
+import { FileUploadService } from './file-upload/file-upload.service'
+import { FileUploadController } from './file-upload/file-upload.controller'
+import { ProvidersService } from './providers/aws-storage.service'
 
 @Module({
   imports: [
@@ -29,7 +31,12 @@ import { FileUploadService } from './file-upload/file-upload.service';
     ClientsModule,
     // autres modules si nécessaire
   ],
-  controllers: [AppController, WelcomeController],
-  providers: [AppService, NomDuServiceService, FileUploadService],
+  controllers: [AppController, WelcomeController, FileUploadController],
+  providers: [
+    AppService,
+    NomDuServiceService,
+    FileUploadService,
+    ProvidersService,
+  ],
 })
 export class AppModule {}
