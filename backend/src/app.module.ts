@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common'
-import { TypeOrmModule } from '@nestjs/typeorm'
+// import { TypeOrmModule } from '@nestjs/typeorm'
 import { MongooseModule } from '@nestjs/mongoose'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { WelcomeController } from './welcome/welcome.controller'
 import { ProductsModule } from './products/products.module'
 import { ClientsModule } from './clients/clients.module'
-import { NomDuServiceService } from './nom-du-service/nom-du-service.service'
 import { FileUploadService } from './file-upload/file-upload.service'
 import { FileUploadController } from './file-upload/file-upload.controller'
-import { ProvidersService } from './providers/aws-storage.service'
+// import { ProvidersService } from './providers/aws-storage.service'
 
 @Module({
   imports: [
@@ -34,9 +33,8 @@ import { ProvidersService } from './providers/aws-storage.service'
   controllers: [AppController, WelcomeController, FileUploadController],
   providers: [
     AppService,
-    NomDuServiceService,
     FileUploadService,
-    ProvidersService,
+    // ProvidersService,
   ],
 })
 export class AppModule {}
