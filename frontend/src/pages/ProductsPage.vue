@@ -9,7 +9,12 @@
       </svg>
       Retour
     </button>
-    <AddProduct/>
+    <div>
+      <AddProduct/>
+    </div>
+    <div>
+      <SearchBar :products="products" />
+    </div>
     <h1 class="text-2xl text-cyan-800 font-bold mb-6">Produits</h1>
     <p v-if="isError">{{ error?.message }}</p>
     <p v-if="isLoading">
@@ -37,6 +42,7 @@
 // import { ref, computed } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
 import ProductCard from '../components/ProductCard.vue'
+import SearchBar from '../components/SearchBar.vue'
 import { ProductInterface } from '../components/ProductCard.vue'
 import { useRouter, useRoute } from 'vue-router'
 import AddProduct from '../components/AddProduct.vue'
