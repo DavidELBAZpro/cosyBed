@@ -11,7 +11,7 @@
     </button>
     <AddProduct/>
     <h1 class="text-2xl text-cyan-800 font-bold mb-6">Produits</h1>
-    <p v-if="isError">Error: {{ error?.message }}</p>
+    <p v-if="isError">{{ error?.message }}</p>
     <p v-if="isLoading">
         <div role="status">
     <svg aria-hidden="true" class="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -34,26 +34,31 @@
 </template>
 
 <script setup lang="ts">
+// import { ref, computed } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
 import ProductCard from '../components/ProductCard.vue'
 import { ProductInterface } from '../components/ProductCard.vue'
-import { useRouter } from 'vue-router';
-import AddProduct from '../components/AddProduct.vue';
+import { useRouter, useRoute } from 'vue-router'
+import AddProduct from '../components/AddProduct.vue'
 
 const router = useRouter()
 const goBack = () => {
   router.go(-1)
 }
 
-
+const route = useRoute();
 
 const fetchProducts = async (): Promise<ProductInterface[]> => {
-  const response = await fetch('http://localhost:1605/products')
+  const id = route.params.id;
+  console.log("Voici l'ID", id);
+  
+  const response = await fetch(`http://localhost:1605/products/${id}`)
   if (!response.ok) {
-    throw new Error('Network response was not ok')
+    throw new Error('No product found with this id: ' + "'" + id + "'")
   }
   const data = await response.json()
-  return data
+  console.log("data",data)
+  return id ? [data] : data; // S'assurer que les données sont toujours sous forme de tableau
 }
 
 const {
