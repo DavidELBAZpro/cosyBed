@@ -13,7 +13,7 @@
       <AddProduct/>
     </div>
     <div>
-      <SearchBar :products="products" />
+      <SearchBar @onSearch="handleSearch" />
     </div>
     <h1 class="text-2xl text-cyan-800 font-bold mb-6">Produits</h1>
     <p v-if="isError">{{ error?.message }}</p>
@@ -28,18 +28,18 @@
  </p>
     <div v-if="!isLoading && !isError" class="flex flex-wrap -m-2">
       <div
-        v-for="product in products"
+        v-for="product in filteredProducts"
         :key="product._id"
         class="p-2 w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
       >
-        <ProductCard :product="product" />
+        <ProductCard :product="product" :searchText="searchText" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-// import { ref, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
 import ProductCard from '../components/ProductCard.vue'
 import SearchBar from '../components/SearchBar.vue'
@@ -56,14 +56,14 @@ const route = useRoute();
 
 const fetchProducts = async (): Promise<ProductInterface[]> => {
   const id = route.params.id;
-  console.log("Voici l'ID", id);
+  // console.log("Voici l'ID", id);
   
   const response = await fetch(`http://localhost:1605/products/${id}`)
   if (!response.ok) {
     throw new Error('No product found with this id: ' + "'" + id + "'")
   }
   const data = await response.json()
-  console.log("data",data)
+  // console.log("data",data)
   return id ? [data] : data; // S'assurer que les données sont toujours sous forme de tableau
 }
 
@@ -76,6 +76,22 @@ const {
   queryKey: ['products'],
   queryFn: fetchProducts,
 })
+
+const searchText = ref('');
+const filteredProducts = computed(() => {
+  console.log(searchText.value);
+  if (searchText.value) {
+    return products?.value?.filter(product =>
+      product.name.toLowerCase().includes(searchText.value.toString().toLowerCase())
+    );
+  }
+  // console.log("products.value", products.value);
+  
+  return products.value;
+})
+const handleSearch = (value : string) => {
+  searchText.value = value;
+}
 </script>
 
 <style scoped>

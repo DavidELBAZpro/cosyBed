@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
 
 export interface ProductInterface {
   _id: number
@@ -69,12 +69,15 @@ export default defineComponent({
       type: Object as () => ProductInterface,
       required: true,
     },
+    searchText: {
+      type: String,
+      required: false,
+      default: '',
+    },
   },
 })
+
+console.log('SearchText in ProductCard', searchText)
 </script>
 
-<style scoped>
-/* h2 {
-  color: red;
-} */
-</style>
+<style scoped></style>
