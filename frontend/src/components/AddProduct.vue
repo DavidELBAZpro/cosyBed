@@ -86,7 +86,7 @@
                     and drop
                   </p>
                   <p class="text-xs text-gray-500 dark:text-gray-400">
-                    SVG, PNG, JPG OR JPEG (MAX. 1980x18200px)
+                    SVG, WEBP, PNG, JPG OR JPEG (MAX. 1980x18200px)
                   </p>
                 </div>
                 <input
@@ -104,6 +104,12 @@
               v-if="imageData.url"
               class="flex items-center justify-center w-full col-span-2"
             >
+              <button
+                @click="removeImage"
+                class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded fixed"
+              >
+                Supprimer l'image
+              </button>
               <img
                 :src="imageData.url"
                 :alt="imageData.file?.name"
@@ -138,9 +144,9 @@
                 id="price"
                 step="0.01"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="299 €"
+                placeholder="299.99 €"
                 required="true"
-                v-model="formData.price"
+                v-model.number="formData.price"
               />
             </div>
             <div class="col-span-2">
@@ -207,16 +213,16 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import { useNotification } from '@kyvg/vue3-notification'
-
-const { notify } = useNotification()
+import { useToast, POSITION } from 'vue-toastification'
 
 const isModalOpen = ref(false)
+const toast = useToast()
 let isLoading = ref(false)
 const imageData = reactive({
   file: null as File | null,
   url: '' as string,
 })
+
 const formData = reactive({
   name: '' as string,
   price: 0 as number,
@@ -276,14 +282,7 @@ const mutation = useMutation({
   onSuccess: () => {
     isLoading = ref(false)
     console.log('Product added successfully!')
-    notify({
-      title: 'Done ✅',
-      text: 'Product added successfully!',
-      type: 'success',
-      ignoreDuplicates: true,
-      closeOnClick: true,
-      duration: 6000,
-    })
+    showToast('success', 'Product added successfully!')
     isModalOpen.value = false
     Object.assign(formData, { name: '', price: 0, description: '' })
     imageData.url = ''
@@ -294,16 +293,9 @@ const mutation = useMutation({
   },
   onError: (error: Error) => {
     isLoading = ref(false)
-    notify({
-      title: 'Error ❌',
-      text: `${error}`,
-      type: 'error',
-      ignoreDuplicates: true,
-      closeOnClick: true,
-      duration: 6000,
-    })
+    isModalOpen.value = false
+    showToast('error', `${error}`)
     console.error('Failed to submit:', error)
-    alert(`Error: ${error.message}`)
   },
 })
 
@@ -320,11 +312,54 @@ const handleSubmit = (event: Event) => {
   }
 
   const data = new FormData()
-  data.append('name', formData.name)
+  data.append('name', formData.name.trim())
   data.append('price', formData.price.toString())
-  data.append('description', formData.description)
+  data.append('description', formData.description.trim())
   data.append('image', imageData.file)
 
   mutation.mutate(data)
+}
+
+const removeImage = () => {
+  imageData.url = ''
+  imageData.file = null
+}
+
+const toastFunctions = {
+  success: toast.success,
+  error: toast.error,
+  info: toast.info,
+  default: toast,
+  warning: toast.warning,
+}
+
+type ToastType = 'success' | 'error' | 'info' | 'default' | 'warning'
+
+/**
+ * Shows a toast with given type and message.
+ *
+ * @param {ToastType} type - The type of toast to display.
+ * @param {ToastContent} message - The message to display in the toast.
+ */
+const showToast = (type: ToastType, message: string) => {
+  const toastFunction = toastFunctions[type]
+  if (toastFunction) {
+    toastFunction(message, {
+      position: POSITION.TOP_RIGHT,
+      timeout: 6000,
+      closeOnClick: true,
+      pauseOnFocusLoss: true,
+      pauseOnHover: true,
+      draggable: true,
+      draggablePercent: 0.6,
+      showCloseButtonOnHover: false,
+      hideProgressBar: false,
+      closeButton: 'button',
+      icon: true,
+      rtl: false,
+    })
+  } else {
+    console.error('Invalid toast type')
+  }
 }
 </script>

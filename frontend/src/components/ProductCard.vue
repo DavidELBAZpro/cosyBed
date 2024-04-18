@@ -59,7 +59,10 @@
           :title="product.price.toString() + ' €'"
           class="font-bold text-gray-700 dark:text-gray-400"
         >
-          {{ product.price.toFixed(2) }} €
+          {{
+            product.price % 1 === 0 ? product.price : product.price.toFixed(2)
+          }}
+          €
         </p>
       </div>
     </div>
