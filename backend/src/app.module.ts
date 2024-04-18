@@ -7,9 +7,9 @@ import { WelcomeController } from './welcome/welcome.controller'
 import { ProductsModule } from './products/products.module'
 import { ClientsModule } from './clients/clients.module'
 import { FileUploadService } from './file-upload/file-upload.service'
-import { FileUploadController } from './file-upload/file-upload.controller'
 import { AwsStorageService } from './providers/s3.service'
 // import { ProvidersService } from './providers/aws-storage.service'
+import { FileUploadModule } from './file-upload/file-upload.module'
 
 @Module({
   imports: [
@@ -29,9 +29,10 @@ import { AwsStorageService } from './providers/s3.service'
     }),
     ProductsModule,
     ClientsModule,
+    FileUploadModule,
     // autres modules si nécessaire
   ],
-  controllers: [AppController, WelcomeController, FileUploadController],
+  controllers: [AppController, WelcomeController],
   providers: [
     AppService,
     FileUploadService,

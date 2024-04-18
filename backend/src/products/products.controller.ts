@@ -38,6 +38,8 @@ export class ProductsController {
     @Body() productData: any,
   ) {
     const product = await this.productsService.addProduct(productData, file)
+    console.log('Produit correctement ajouté dans les DB', product)
+
     return { product }
   }
 }
