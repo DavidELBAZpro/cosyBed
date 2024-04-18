@@ -6,13 +6,22 @@
       <img class="rounded-t-lg" :src="product.imageUrl" :alt="product.name" />
     </a>
     <div class="border-t border-gray-200 dark:border-gray-600"></div>
-    <!-- Bordure ajoutée ici -->
     <div class="p-5">
       <a href="#">
-        <h5
+        <!-- <h5
           class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
         >
           {{ product.name }}
+        </h5> -->
+        <h5
+          class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+        >
+          <span
+            v-for="(part, index) in highlightedName"
+            :key="index"
+            :style="{ backgroundColor: part.match ? 'yellow' : 'none' }"
+            >{{ part.text }}</span
+          >
         </h5>
       </a>
       <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
@@ -52,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, onMounted } from 'vue'
+import { defineProps, onMounted, computed } from 'vue'
 
 export interface ProductInterface {
   _id: number
@@ -71,6 +80,36 @@ const props = defineProps({
 })
 onMounted(() => {
   console.log('SearchText in ProductCard', props?.searchText)
+})
+
+const highlightedName = computed(() => {
+  if (!props.searchText) {
+    return [{ text: props.product.name, match: false }]
+  }
+  const regex = new RegExp(props.searchText, 'gi')
+  const matches = []
+  let match
+  let lastIndex = 0
+
+  while ((match = regex.exec(props.product.name)) !== null) {
+    if (match.index > lastIndex) {
+      matches.push({
+        text: props.product.name.substring(lastIndex, match.index),
+        match: false,
+      })
+    }
+    matches.push({ text: match[0], match: true })
+    lastIndex = match.index + match[0].length
+  }
+
+  if (lastIndex < props.product.name.length) {
+    matches.push({
+      text: props.product.name.substring(lastIndex),
+      match: false,
+    })
+  }
+
+  return matches
 })
 </script>
 
