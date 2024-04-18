@@ -108,7 +108,6 @@ const highlightedName = computed(() => {
       match: false,
     })
   }
-
   return matches
 })
 </script>

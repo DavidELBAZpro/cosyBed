@@ -55,7 +55,7 @@
           </button>
         </div>
         <!-- Modal body -->
-        <form class="p-4 md:p-5">
+        <form class="p-4 md:p-5" @submit="handleSubmit">
           <div class="grid gap-4 mb-4 grid-cols-2">
             <div class="flex items-center justify-center w-full col-span-2">
               <label
@@ -90,11 +90,13 @@
                   </p>
                 </div>
                 <input
+                  name="dropzone-file"
                   id="dropzone-file"
                   type="file"
                   class="hidden"
                   @change="handleFileUpload"
                   accept=".svg, .png, .jpg, .jpeg"
+                  required="true"
                 />
               </label>
             </div>
@@ -121,6 +123,7 @@
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Entrez le nom du produit"
                 required="true"
+                v-model="formData.name"
               />
             </div>
             <div class="col-span-2 sm:col-span-1">
@@ -136,6 +139,7 @@
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="299 €"
                 required="true"
+                v-model="formData.price"
               />
             </div>
             <div class="col-span-2">
@@ -151,6 +155,7 @@
                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Ex: Belle petite chaise de jardin ..."
                 required="true"
+                v-model="formData.description"
               ></textarea>
             </div>
           </div>
@@ -179,13 +184,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive } from 'vue'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
 
 const isModalOpen = ref(false)
 const imageData = reactive({
   file: null as File | null,
   url: '' as string,
 })
+const formData = reactive({
+  name: '' as string,
+  price: 0 as number,
+  description: '' as string,
+})
+
+const queryClient = useQueryClient()
 
 const closeOnOutsideClick = (event: MouseEvent) => {
   if (event.target instanceof HTMLElement && event.target.id === 'crud-modal') {
@@ -213,14 +226,52 @@ function handleFileUpload(event: Event) {
   imageData.file = file
   imageData.url = URL.createObjectURL(file)
 }
-//libérer les ressources lorsque le composant est démonté
-watch(isModalOpen, (newValue) => {
-  if (!newValue) {
-    if (imageData.url) {
-      URL.revokeObjectURL(imageData.url)
-      imageData.url = ''
-      imageData.file = null
+
+const mutation = useMutation({
+  mutationFn: async (data: FormData) => {
+    const response = await fetch('http://localhost:1605/products', {
+      method: 'POST',
+      body: data,
+    })
+    if (!response.ok) {
+      throw new Error(await response.text())
     }
-  }
+    return response.json()
+  },
+  onSuccess: () => {
+    console.log('Product added successfully!')
+    isModalOpen.value = false
+    Object.assign(formData, { name: '', price: 0, description: '' })
+    imageData.url = ''
+    imageData.file = null
+    queryClient.invalidateQueries({
+      queryKey: ['products'],
+    })
+  },
+  onError: (error: Error) => {
+    console.error('Failed to submit:', error)
+    alert(`Error: ${error.message}`)
+  },
 })
+
+const handleSubmit = (event: Event) => {
+  event.preventDefault()
+  if (
+    !formData.name ||
+    formData.price <= 0 ||
+    !formData.description ||
+    !imageData.file
+  ) {
+    alert('Please fill in all fields and select an image.')
+    return
+  }
+
+  const data = new FormData()
+  data.append('name', formData.name)
+  data.append('price', formData.price.toString())
+  data.append('description', formData.description)
+  data.append('image', imageData.file)
+
+  mutation.mutate(data)
+}
 </script>
