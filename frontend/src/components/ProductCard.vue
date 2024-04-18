@@ -93,7 +93,7 @@ const props = defineProps({
 const modalVisible = ref(false)
 
 const highlightedName = computed(() => {
-  if (!props.searchText) {
+  if (!props.searchText || props.searchText === '') {
     return [{ text: props.product.name, match: false }]
   }
   const regex = new RegExp(props.searchText, 'gi')
