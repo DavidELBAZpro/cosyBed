@@ -90,7 +90,7 @@
                   </p>
                 </div>
                 <input
-                  name="dropzone-file"
+                  name="image"
                   id="dropzone-file"
                   type="file"
                   class="hidden"
@@ -229,7 +229,7 @@ function handleFileUpload(event: Event) {
 
 const mutation = useMutation({
   mutationFn: async (data: FormData) => {
-    const response = await fetch('http://localhost:1605/products', {
+    const response = await fetch('http://localhost:1605/products/upload', {
       method: 'POST',
       body: data,
     })

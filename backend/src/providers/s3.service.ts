@@ -17,7 +17,7 @@ export class AwsStorageService implements IStorageProvider {
       Bucket: bucket,
       Key: `products/${Date.now().toString()}-${file.originalname}`,
       Body: file.buffer,
-      ACL: 'public-read',
+      // ACL: 'public-read',
     }
 
     const data = await this.s3.upload(params).promise()

@@ -32,7 +32,7 @@ export class ProductsController {
   }
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   async uploadProductImage(
     @UploadedFile() file: Express.Multer.File,
     @Body() productData: any,
