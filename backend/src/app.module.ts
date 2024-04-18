@@ -8,6 +8,7 @@ import { ProductsModule } from './products/products.module'
 import { ClientsModule } from './clients/clients.module'
 import { FileUploadService } from './file-upload/file-upload.service'
 import { FileUploadController } from './file-upload/file-upload.controller'
+import { AwsStorageService } from './providers/s3.service'
 // import { ProvidersService } from './providers/aws-storage.service'
 
 @Module({
@@ -34,6 +35,7 @@ import { FileUploadController } from './file-upload/file-upload.controller'
   providers: [
     AppService,
     FileUploadService,
+    { provide: 'IStorageProvider', useClass: AwsStorageService },
     // ProvidersService,
   ],
 })

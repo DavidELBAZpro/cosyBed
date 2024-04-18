@@ -4,12 +4,14 @@ import { Model } from 'mongoose'
 import { Product } from './products.model'
 import { ProductSchema, ProductDocument } from './products.schema'
 import { ObjectId } from 'mongodb'
+import { FileUploadService } from 'src/file-upload/file-upload.service'
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectModel('Product')
     private readonly productsModel: Model<ProductDocument>,
+    private fileUploadService: FileUploadService,
   ) {}
 
   getAllProducts = async (): Promise<Product[]> => {
@@ -25,5 +27,12 @@ export class ProductsService {
     if (!product)
       throw new NotFoundException(`Product with ID: ${objectId} not found`)
     return product
+  }
+
+  async addProduct(productData: any, file: Express.Multer.File): Promise<any> {
+    const imageUrl = await this.fileUploadService.uploadFile(
+      file,
+      'vue-nest-bucket',
+    )
   }
 }
