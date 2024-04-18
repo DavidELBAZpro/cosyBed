@@ -37,6 +37,7 @@ export class ProductsController {
     @UploadedFile() file: Express.Multer.File,
     @Body() productData: any,
   ) {
-    await this.productsService.addProduct(productData, file)
+    const product = await this.productsService.addProduct(productData, file)
+    return { product }
   }
 }

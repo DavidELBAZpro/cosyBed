@@ -34,5 +34,13 @@ export class ProductsService {
       file,
       'vue-nest-bucket',
     )
+    const newProduct = new this.productsModel({
+      ...productData,
+      imageUrl: imageUrl,
+    })
+
+    // Save the product in the database
+    const result = await newProduct.save()
+    return result.toObject() as Product
   }
 }
