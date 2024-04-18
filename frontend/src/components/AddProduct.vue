@@ -186,6 +186,9 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
+import { useNotification } from '@kyvg/vue3-notification'
+
+const { notify } = useNotification()
 
 const isModalOpen = ref(false)
 const imageData = reactive({
@@ -240,6 +243,14 @@ const mutation = useMutation({
   },
   onSuccess: () => {
     console.log('Product added successfully!')
+    notify({
+      title: 'Done ✅',
+      text: 'Product added successfully!',
+      type: 'success',
+      ignoreDuplicates: true,
+      closeOnClick: true,
+      duration: 6000,
+    })
     isModalOpen.value = false
     Object.assign(formData, { name: '', price: 0, description: '' })
     imageData.url = ''
@@ -249,6 +260,14 @@ const mutation = useMutation({
     })
   },
   onError: (error: Error) => {
+    notify({
+      title: 'Error ❌',
+      text: `${error}`,
+      type: 'error',
+      ignoreDuplicates: true,
+      closeOnClick: true,
+      duration: 6000,
+    })
     console.error('Failed to submit:', error)
     alert(`Error: ${error.message}`)
   },
