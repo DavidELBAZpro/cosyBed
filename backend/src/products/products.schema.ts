@@ -1,16 +1,24 @@
-import { SchemaFactory } from '@nestjs/mongoose'
+import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
-import { Product } from './products.model'
 
-export type ProductDocument = Product & Document
-
+@Schema({
+  collection: 'products',
+  versionKey: false,
+})
 class ProductClass {
+  @Prop({ required: true })
   name: string
+
+  @Prop({ required: true })
   description: string
+
+  @Prop({ required: true })
   price: number
+
+  @Prop({ required: true })
+  imageUrl: string
 }
 
-export const ProductSchema = SchemaFactory.createForClass(ProductClass).set(
-  'collection',
-  'products',
-)
+export type ProductDocument = ProductClass & Document
+
+export const ProductSchema = SchemaFactory.createForClass(ProductClass)

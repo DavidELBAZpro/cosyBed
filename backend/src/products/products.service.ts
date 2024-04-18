@@ -10,7 +10,7 @@ import { FileUploadService } from 'src/file-upload/file-upload.service'
 export class ProductsService {
   constructor(
     @InjectModel('Product')
-    private readonly productsModel: Model<ProductDocument>,
+    private productsModel: Model<ProductDocument>,
     private fileUploadService: FileUploadService,
   ) {}
 
@@ -29,18 +29,50 @@ export class ProductsService {
     return product
   }
 
-  async addProduct(productData: any, file: Express.Multer.File): Promise<any> {
-    const imageUrl = await this.fileUploadService.uploadFile(
-      file,
-      'vue-nest-bucket',
-    )
-    const newProduct = new this.productsModel({
-      ...productData,
-      imageUrl: imageUrl,
-    })
+  addProduct = async (
+    productData: any,
+    file: Express.Multer.File,
+  ): Promise<any> => {
+    console.log('productData received from frontend:', productData)
+    console.log('Name:', productData.name)
+    console.log('Description:', productData.description)
+    console.log('Price:', productData.price)
+    try {
+      const imageUrl = await this.fileUploadService.uploadFile(
+        file,
+        'vue-nest-bucket',
+      )
+      if (!imageUrl) {
+        throw new Error('Image upload failed')
+      }
+      console.log('Final data to be saved:', {
+        ...productData,
+        price: parseFloat(productData.price),
+        imageUrl: imageUrl,
+      })
 
-    // Save the product in the database
-    const result = await newProduct.save()
-    return result.toObject() as Product
+      const newProduct = new this.productsModel({
+        name: productData.name,
+        description: productData.description,
+        price: parseFloat(productData.price),
+        imageUrl: imageUrl,
+      })
+
+      console.log('New Product posted (toObject):', newProduct.toObject())
+
+      const result = await newProduct.save()
+      console.log('Saved Product:', {
+        id: result._id,
+        name: result.name,
+        description: result.description,
+        price: result.price,
+        imageUrl: result.imageUrl,
+        versionKey: result.__v,
+      })
+      return result.toObject() as Product
+    } catch (error) {
+      console.error('Error saving the product:', error)
+      throw new Error('Error processing your request')
+    }
   }
 }

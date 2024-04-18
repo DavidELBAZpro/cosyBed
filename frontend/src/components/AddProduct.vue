@@ -236,6 +236,8 @@ const mutation = useMutation({
       method: 'POST',
       body: data,
     })
+    console.log('data sent to back', data)
+
     if (!response.ok) {
       throw new Error(await response.text())
     }
