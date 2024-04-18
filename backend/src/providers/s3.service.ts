@@ -15,7 +15,7 @@ export class AwsStorageService implements IStorageProvider {
   async upload(file: Express.Multer.File, bucket: string): Promise<string> {
     const params = {
       Bucket: bucket,
-      Key: `${Date.now().toString()}-${file.originalname}`,
+      Key: `products/${Date.now().toString()}-${file.originalname}`,
       Body: file.buffer,
       ACL: 'public-read',
     }
