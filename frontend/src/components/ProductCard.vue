@@ -3,7 +3,11 @@
     class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
   >
     <a href="#">
-      <img class="rounded-t-lg" :src="product.imageUrl" :alt="product.name" />
+      <img
+        class="rounded-t-lg product-image"
+        :src="product.imageUrl"
+        :alt="product.name"
+      />
     </a>
     <div class="border-t border-gray-200 dark:border-gray-600"></div>
     <div class="p-5">
@@ -14,7 +18,7 @@
           {{ product.name }}
         </h5> -->
         <h5
-          class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+          class="product-title mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
         >
           <span
             v-for="(part, index) in highlightedName"
@@ -24,7 +28,9 @@
           >
         </h5>
       </a>
-      <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+      <p
+        class="product-description mb-3 font-normal text-gray-700 dark:text-gray-400"
+      >
         {{ product.description }}
       </p>
       <div class="flex justify-between items-center">
@@ -112,4 +118,28 @@ const highlightedName = computed(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.product-image {
+  width: 100%;
+  height: 20rem;
+  object-fit: cover;
+}
+.product-title {
+  height: 2em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* nombre de lignes à afficher */
+  -webkit-box-orient: vertical;
+}
+
+.product-description {
+  height: 3em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  line-height: 1.33em;
+}
+</style>

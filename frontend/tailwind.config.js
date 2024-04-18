@@ -6,7 +6,11 @@ export default {
     'node_modules/flowbite-vue/**/*.{js,jsx,ts,tsx}'
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        'xxl': '1440px' // Ajouter un breakpoint personnalisé 'xxl'
+      }
+    },
   },
   plugins: [require('flowbite/plugin')],
 }

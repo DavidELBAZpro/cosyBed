@@ -30,7 +30,7 @@
       <div
         v-for="product in filteredProducts"
         :key="product._id"
-        class="p-2 w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
+        class="p-2 w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 xxl:w-1/5"
       >
         <ProductCard :product="product" :searchText="searchText" />
       </div>
