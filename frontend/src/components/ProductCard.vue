@@ -51,8 +51,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from 'vue'
+<script setup lang="ts">
+import { defineProps, onMounted } from 'vue'
 
 export interface ProductInterface {
   _id: number
@@ -62,22 +62,16 @@ export interface ProductInterface {
   imageUrl?: string
 }
 
-export default defineComponent({
-  name: 'ProductCard',
-  props: {
-    product: {
-      type: Object as () => ProductInterface,
-      required: true,
-    },
-    searchText: {
-      type: String,
-      required: false,
-      default: '',
-    },
+const props = defineProps({
+  product: {
+    type: Object as () => ProductInterface,
+    required: true,
   },
+  searchText: String,
 })
-
-console.log('SearchText in ProductCard', searchText)
+onMounted(() => {
+  console.log('SearchText in ProductCard', props?.searchText)
+})
 </script>
 
 <style scoped></style>
