@@ -34,8 +34,8 @@
         {{ product.description }}
       </p>
       <div class="flex justify-between items-center">
-        <a
-          href="#"
+        <button
+          @click="modalVisible = true"
           class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Details
@@ -54,7 +54,8 @@
               d="M1 5h12m0 0L9 1m4 4L9 9"
             />
           </svg>
-        </a>
+        </button>
+        <ProductDetails :product="product" v-model:isVisible="modalVisible" />
         <p
           :title="product.price.toString() + ' €'"
           class="font-bold text-gray-700 dark:text-gray-400"
@@ -70,7 +71,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { computed, ref } from 'vue'
+import ProductDetails from './ProductDetails.vue'
 
 export interface ProductInterface {
   _id: number
@@ -87,9 +89,8 @@ const props = defineProps({
   },
   searchText: String,
 })
-onMounted(() => {
-  console.log('SearchText in ProductCard', props?.searchText)
-})
+
+const modalVisible = ref(false)
 
 const highlightedName = computed(() => {
   if (!props.searchText) {
