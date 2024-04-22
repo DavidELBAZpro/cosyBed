@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       screens: {
-        'xxl': '1440px' // Ajouter un breakpoint personnalisé 'xxl'
+        'xxl': '1440px' // Ajout d'un breakpoint personnalisé 'xxl'
       },
       keyframes: {
         'scale-up-bl': {
@@ -20,13 +20,19 @@ export default {
             transform: 'scale(1)',
             transformOrigin: 'bottom left'
           }
+        },
+        'scale-up': {
+          '0%': { transform: 'scale(1)' },
+          '100%': { transform: 'scale(1.05)' }  // Scale up by 5% (Adjust if needed)
         }
       },
       animation: {
-        'scale-up-bl': 'scale-up-bl 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) both'
+        'scale-up-bl': 'scale-up-bl 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) both',
+        'scale-up': 'scale-up 0.5s ease-in-out forwards'
       }
     },
   },
-  plugins: [require('flowbite/plugin')],
+  plugins: [
+    require('flowbite/plugin')
+  ],
 }
-
