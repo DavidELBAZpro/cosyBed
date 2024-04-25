@@ -1,6 +1,11 @@
 <template>
   <div
-    class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 transition-transform duration-300 hover:scale-105"
+    class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 transition-transform duration-300"
+    :class="{
+      'pointer-events-none': modalVisible,
+      'hover:scale-105': !modalVisible,
+      'transform:none': modalVisible,
+    }"
   >
     <a href="#">
       <img
@@ -12,11 +17,6 @@
     <div class="border-t border-gray-200 dark:border-gray-600"></div>
     <div class="p-5">
       <a href="#">
-        <!-- <h5
-          class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-        >
-          {{ product.name }}
-        </h5> -->
         <h5
           class="product-title mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
         >

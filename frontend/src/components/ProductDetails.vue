@@ -4,18 +4,22 @@
     id="default-modal"
     tabindex="-1"
     aria-hidden="true"
-    class="fixed inset-0 overflow-y-auto overflow-x-hidden z-50 flex justify-center items-center h-[calc(100%-1rem)] max-h-full"
+    class="fixed inset-0 z-50"
     :class="{
-      'opacity-0': !isVisible,
-      'opacity-100 animate-scale-up-bl': isVisible,
+      'opacity-0 pointer-events-none': !isVisible,
+      'opacity-100 pointer-events-auto': isVisible,
     }"
   >
+    <!-- Backdrop -->
+    <div class="fixed inset-0 bg-black bg-opacity-50"></div>
+
+    <!-- Modal Content -->
     <div
-      class="relative p-4 w-full max-w-2xl max-h-full bg-white rounded-lg shadow dark:bg-gray-700"
+      class="relative p-4 w-full max-w-2xl h-screen bg-white rounded-lg shadow dark:bg-gray-700 mx-auto my-0 flex flex-col justify-center animate-scale-up-bl"
     >
       <!-- Image ajustée avec object-contain -->
       <img
-        class="rounded-t-lg w-full max-h-full object-contain"
+        class="rounded-t-lg w-full object-contain flex-shrink-0"
         :src="product.imageUrl"
         :alt="product.name"
       />
@@ -56,7 +60,7 @@
 </template>
 
 <script setup>
-import { defineEmits } from 'vue'
+import { defineEmits, nextTick } from 'vue'
 
 const props = defineProps({
   product: Object,
@@ -66,6 +70,13 @@ const emit = defineEmits(['update:isVisible'])
 
 const closeModal = () => {
   emit('update:isVisible', false)
+  console.log(
+    'Fermeture du modal, état avant la fermeture:',
+    modalVisible.value
+  )
+  nextTick(() => {
+    console.log('État après mise à jour:', modalVisible.value)
+  })
 }
 </script>
 
