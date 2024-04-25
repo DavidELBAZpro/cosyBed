@@ -59,12 +59,19 @@
   </div>
 </template>
 
-<script setup>
-import { defineEmits, nextTick } from 'vue'
+<script setup lang="ts">
+import { nextTick } from 'vue'
+import { ProductInterface } from './ProductCard.vue'
 
 const props = defineProps({
-  product: Object,
-  isVisible: Boolean,
+  product: {
+    type: Object as () => ProductInterface,
+    required: true,
+  },
+  isVisible: {
+    type: Boolean,
+    required: true,
+  },
 })
 const emit = defineEmits(['update:isVisible'])
 
