@@ -1,9 +1,14 @@
 <template>
   <div id="app">
-    <div class="absolute top-4 right-4">
-      <div v-if="isLoggedIn">
-        <div>Bienvenue {{ userName }}</div>
-        <button @click="goToLogin">Sign Out</button>
+    <div class="flex flex-row justify-end">
+      <div v-if="isLoggedIn" class="flex mt-3 mr-5">
+        <div class="m-3 text-blue-700">Bienvenue {{ userName }}</div>
+        <button
+          class="m-1 inline-flex items-left px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          @click="goToLogin"
+        >
+          Sign Out
+        </button>
       </div>
       <div class="px-6 sm:px-0 max-w-sm">
         <button
@@ -47,7 +52,6 @@ const goToLogin = () => {
 }
 
 const { state } = useStore()
-
 const userName = ref(state.user.name)
 const isLoggedIn = ref(state.user.loggedIn)
 </script>
