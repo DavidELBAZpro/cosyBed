@@ -1,7 +1,7 @@
 <template>
   <button
-      @click="goToHomePage"
-      class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      @click="goBack"
+      class="m-3 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -30,7 +30,8 @@
 </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, defineEmits, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { useStore } from '../store/store.ts'
 import { firebaseConfig } from '../services/firebase-config'
 import firebase from 'firebase/compat/app'
 import { getAuth, signOut } from 'firebase/auth'
@@ -47,10 +48,14 @@ const user = ref(null)
 const isSignedIn = ref(false)
 const isLoading = ref(true)
 
-const emit = defineEmits(['update:user', 'update:isSignedIn'])
+const { state, logIn, logOut } = useStore()
+console.log("user:", state.user.name)
+console.log("user logged in:", state.user.loggedIn)
 
-const goToHomePage = () => {
-  router.push('/')
+
+
+const goBack = () => {
+  router.go(-1)
 }
 
   firebase.initializeApp(firebaseConfig)
@@ -67,9 +72,10 @@ const uiConfig = {
   callbacks: {
     signInSuccessWithAuthResult: function (authResult: any) {
       user.value = authResult.user.displayName
+      logIn(authResult.user.displayName)
       console.log(authResult)
       isSignedIn.value = true
-      goToHomePage()
+      // goBack()
       return false
     },
     uiShown: function () {
@@ -83,7 +89,8 @@ const handleSignOut = () => {
   signOut(auth).then(() => {
     console.log("signed out successfully")
     user.value = null
-    isSignedIn.value = false  
+    isSignedIn.value = false
+    logOut() 
     ui.start('#firebaseui-auth-container', uiConfig)
   })
   .catch((error:any) => {

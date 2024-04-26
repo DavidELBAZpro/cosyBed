@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-cyan-200">
+  <div class="bg-cyan-200 w-screen h-screen">
     <div class="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
       <div
         class="relative isolate overflow-hidden bg-gray-900 px-6 pt-16 shadow-2xl sm:rounded-3xl sm:px-16 md:pt-24 lg:flex lg:px-24 lg:pt-0"
@@ -42,7 +42,7 @@
         >
           <a
             href="/products"
-            class="rounded-md bg-cyan-200 px-6 py-3 text-sm font-semibold text-gray-900 shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white lg:mx-2"
+            class="rounded-md bg-cyan-200 px-6 py-3 text-sm font-semibold text-gray-900 shadow-sm hover:bg-cyan-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white lg:mx-2"
           >
             Produits
           </a>
