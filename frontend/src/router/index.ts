@@ -3,6 +3,7 @@ import HelloWorld from '../components/HelloWorld.vue'
 import ProductsPage from '../pages/ProductsPage.vue'
 import WelcomePage from '../pages/WelcomePage.vue'
 import NotFoundPage from '../pages/NotFoundPage.vue'
+import Login from '../components/Login.vue'
 
 const routes = [
   {
@@ -15,6 +16,7 @@ const routes = [
     name: 'ProductsPage',
     component: ProductsPage,
   },
+  { path: '/login', name: 'Login', component: Login },
   {
     path: '/',
     name: 'WelcomePage',

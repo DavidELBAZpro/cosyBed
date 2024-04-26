@@ -73,17 +73,13 @@ const props = defineProps({
     required: true,
   },
 })
+const { product, isVisible } = props
 const emit = defineEmits(['update:isVisible'])
 
 const closeModal = () => {
   emit('update:isVisible', false)
-  console.log(
-    'Fermeture du modal, état avant la fermeture:',
-    modalVisible.value
-  )
-  nextTick(() => {
-    console.log('État après mise à jour:', modalVisible.value)
-  })
+  console.log('Fermeture du modal, état avant la fermeture:')
+  nextTick(() => {})
 }
 </script>
 

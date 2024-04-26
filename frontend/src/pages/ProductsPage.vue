@@ -49,7 +49,7 @@ import AddProduct from '../components/AddProduct.vue'
 
 const router = useRouter()
 const goBack = () => {
-  router.go(-1)
+  router.replace('/')
 }
 
 const route = useRoute();
