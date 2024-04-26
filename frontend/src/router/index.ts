@@ -3,7 +3,7 @@ import HelloWorld from '../components/HelloWorld.vue'
 import ProductsPage from '../pages/ProductsPage.vue'
 import WelcomePage from '../pages/WelcomePage.vue'
 import NotFoundPage from '../pages/NotFoundPage.vue'
-import Login from '../components/Login.vue'
+import Login from '../components/FirbeaseLogin.vue'
 
 const routes = [
   {

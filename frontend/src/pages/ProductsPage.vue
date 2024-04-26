@@ -56,7 +56,6 @@ const route = useRoute();
 
 const fetchProducts = async (): Promise<ProductInterface[]> => {
   const id = route.params.id;
-  // console.log("Voici l'ID", id);
   
   const response = await fetch(`http://localhost:1605/products/${id}`)
   if (!response.ok) {
