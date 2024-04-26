@@ -3,6 +3,10 @@
   <div class="hello">
     <h1>{{ props.msg }}</h1>
     <h2 v-if="user">Signed in user : {{ user }}</h2>
+    <div v-if="isSignedIn">
+    <button @click="handleSignOut">
+      Sign Out
+    </button></div>
   </div>
   
   <div id="firebaseui-auth-container"></div>
@@ -17,18 +21,32 @@
 </div>
 </template>
 <script setup lang="ts">
-import { ref, defineProps } from 'vue'
+import { ref, onMounted } from 'vue'
 import { firebaseConfig } from '../services/firebase-config'
 import firebase from 'firebase/compat/app'
+import { getAuth, signOut } from 'firebase/auth'
 import * as firebaseui from 'firebaseui'
 import 'firebaseui/dist/firebaseui.css'
 
-firebase.initializeApp(firebaseConfig)
+const props = defineProps({
+  msg: {
+    type: String,
+  },
+})
+const user = ref(null)
+const isSignedIn = ref(false)
+const isLoading = ref(true)
+
+
+
+  firebase.initializeApp(firebaseConfig)
+
+  const auth = getAuth()
 
 let ui = new firebaseui.auth.AuthUI(firebase.auth())
 const uiConfig = {
   signInFlow: 'popup',
-  signInSuccessUrl: 'https://google.com',
+  signInSuccessUrl: 'http://localhost:5173',
   signInOptions: [
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
   ],
@@ -45,15 +63,21 @@ const uiConfig = {
   },
 }
 
-const props = defineProps({
-  msg: {
-    type: String,
-  },
+
+const handleSignOut = () => {
+  signOut(auth).then(() => {
+    console.log("signed out successfully")
+    user.value = null
+    isSignedIn.value = false  
+    ui.start('#firebaseui-auth-container', uiConfig)
+  })
+  .catch((error:any) => {
+    console.log(error,"error sign out failed"); 
+  })
+}
+onMounted(() => {
+ui.start('#firebaseui-auth-container', uiConfig)
 })
 
-ui.start('#firebaseui-auth-container', uiConfig)
 
-const user = ref(null)
-const isSignedIn = ref(false)
-const isLoading = ref(true)
 </script>

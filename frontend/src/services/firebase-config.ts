@@ -1,5 +1,5 @@
 export const firebaseConfig = {
-  apiKey: 'AIzaSyCMnH2CLQtH3tvHgC5dqY6XmHku91M-gLM',
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: 'vue-nest-app.firebaseapp.com',
   projectId: 'vue-nest-app',
   storageBucket: 'vue-nest-app.appspot.com',

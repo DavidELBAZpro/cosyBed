@@ -5,6 +5,9 @@ import 'vue-toastification/dist/index.css'
 import './style.css'
 import App from './App.vue'
 import router from './router'
+import * as dotenv from 'dotenv'
+
+dotenv.config()
 
 const app = createApp(App)
 
