@@ -1,4 +1,13 @@
 <template>
+  <button
+      @click="goToHomePage"
+      class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Retour
+    </button>
   <div class="flex items-center justify-center h-screen">
   <div class="hello">
     <h1>{{ props.msg }}</h1>
@@ -21,12 +30,13 @@
 </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineEmits, onBeforeUnmount } from 'vue'
 import { firebaseConfig } from '../services/firebase-config'
 import firebase from 'firebase/compat/app'
 import { getAuth, signOut } from 'firebase/auth'
 import * as firebaseui from 'firebaseui'
 import 'firebaseui/dist/firebaseui.css'
+import router from '../router'
 
 const props = defineProps({
   msg: {
@@ -37,7 +47,11 @@ const user = ref(null)
 const isSignedIn = ref(false)
 const isLoading = ref(true)
 
+const emit = defineEmits(['update:user', 'update:isSignedIn'])
 
+const goToHomePage = () => {
+  router.push('/')
+}
 
   firebase.initializeApp(firebaseConfig)
 
@@ -55,6 +69,7 @@ const uiConfig = {
       user.value = authResult.user.displayName
       console.log(authResult)
       isSignedIn.value = true
+      goToHomePage()
       return false
     },
     uiShown: function () {
@@ -76,7 +91,19 @@ const handleSignOut = () => {
   })
 }
 onMounted(() => {
-ui.start('#firebaseui-auth-container', uiConfig)
+  ui.start('#firebaseui-auth-container', uiConfig)
+})
+
+// Ajouter une méthode de nettoyage dans le hook `beforeUnmount` ou `destroyed` (selon Vue 2 ou Vue 3)
+
+onBeforeUnmount(() => { 
+  if (ui) {
+        ui.delete().then(() => {
+            console.log('FirebaseUI Auth instance is deleted');
+        }).catch((error) => {
+            console.error('Error deleting FirebaseUI Auth instance', error);
+        });
+    }
 })
 
 

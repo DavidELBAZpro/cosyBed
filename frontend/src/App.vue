@@ -3,6 +3,7 @@
     <div class="absolute top-4 right-4">
       <div class="px-6 sm:px-0 max-w-sm">
         <button
+          v-if="!isLoggedIn"
           @click="goToLogin"
           type="button"
           class="text-white w-full bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between mr-2 mb-2"
@@ -32,11 +33,15 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import router from './router'
 
 const goToLogin = () => {
   router.push('/login')
 }
+
+const userName = ref(null)
+const isLoggedIn = ref(false)
 </script>
 
 <style scoped>
