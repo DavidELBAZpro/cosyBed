@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useStore } from './store/store.ts'
 import router from './router'
 
@@ -54,6 +54,13 @@ const goToLogin = () => {
 const { state } = useStore()
 const userName = ref(state.user.name)
 const isLoggedIn = ref(state.user.loggedIn)
+
+watch(
+  () => state.user.name,
+  (newValue) => {
+    userName.value = newValue
+  }
+)
 </script>
 
 <style scoped>

@@ -60,6 +60,7 @@ const goBack = () => {
   router.go(-1)
 }
 
+
   firebase.initializeApp(firebaseConfig)
 
   const auth = getAuth()
@@ -67,7 +68,7 @@ const goBack = () => {
 let ui = new firebaseui.auth.AuthUI(firebase.auth())
 const uiConfig = {
   signInFlow: 'popup',
-  signInSuccessUrl: 'http://localhost:5173',
+  signInSuccessUrl: 'http://localhost:5173/products',
   signInOptions: [
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
   ],
@@ -77,8 +78,7 @@ const uiConfig = {
       logIn(authResult.user.displayName)
       console.log(authResult)
       isSignedIn.value = true
-      // goBack()
-      return false
+      return true
     },
     uiShown: function () {
       isLoading.value = false
@@ -93,6 +93,7 @@ const handleSignOut = () => {
     user.value = null
     isSignedIn.value = false
     logOut() 
+    location.reload()
     ui.start('#firebaseui-auth-container', uiConfig)
   })
   .catch((error:any) => {
