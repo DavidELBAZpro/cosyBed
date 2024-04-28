@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="backgroundColor">
     <div class="flex flex-row justify-end">
       <div v-if="isLoggedIn" class="flex mt-3 mr-5">
         <div class="m-3 text-blue-700">Bienvenue {{ userName }}</div>
@@ -43,17 +43,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useStore } from './store/store.ts'
 import router from './router'
 
 const goToLogin = () => {
   router.push('/login')
 }
-
+const route = useRoute()
 const { state } = useStore()
 const userName = ref(state.user.name)
 const isLoggedIn = ref(state.user.loggedIn)
+
+const backgroundColor = computed(() => {
+  switch (route.name) {
+    case 'WelcomePage':
+      return 'bg-cyan-200'
+    default:
+      return ''
+  }
+})
 
 watch(
   () => state.user.name,
@@ -63,8 +73,4 @@ watch(
 )
 </script>
 
-<style scoped>
-body {
-  background-color: yellow;
-}
-</style>
+<style scoped></style>

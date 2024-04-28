@@ -60,4 +60,7 @@
 
 <style scoped>
 /* Vos styles ici */
+body {
+  background-color: red;
+}
 </style>
