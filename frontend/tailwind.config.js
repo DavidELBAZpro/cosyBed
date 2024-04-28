@@ -11,7 +11,8 @@ export default {
         'cremeux': '#fefae0',
       },
       screens: {
-        'xxl': '1440px' // Ajout d'un breakpoint personnalisé 'xxl'
+        'xxl': '1440px', // Ajout d'un breakpoint personnalisé 'xxl'
+        'custom-breakpoint': '840px',  // Point de rupture personnalisé
       },
       keyframes: {
         'scale-up-bl': {
