@@ -55,7 +55,11 @@
             />
           </svg>
         </button>
-        <ProductDetails :product="product" v-model:isVisible="modalVisible" />
+        <ProductDetails
+          v-if="modalVisible"
+          :product="product"
+          v-model:isVisible="modalVisible"
+        />
         <p
           :title="product.price.toString() + ' €'"
           class="font-bold text-gray-700 dark:text-gray-400"

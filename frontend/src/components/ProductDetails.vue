@@ -73,6 +73,7 @@ const props = defineProps({
     required: true,
   },
 })
+
 const { product, isVisible } = props
 const emit = defineEmits(['update:isVisible'])
 
