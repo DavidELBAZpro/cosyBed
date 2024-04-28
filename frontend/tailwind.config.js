@@ -7,6 +7,9 @@ export default {
   ],
   theme: {
     extend: {
+      colors: {
+        'cremeux': '#fefae0',
+      },
       screens: {
         'xxl': '1440px' // Ajout d'un breakpoint personnalisé 'xxl'
       },

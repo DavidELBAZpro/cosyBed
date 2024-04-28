@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="backgroundColor">
+  <div id="app">
     <div class="flex flex-row justify-end">
       <div v-if="isLoggedIn" class="flex mt-3 mr-5">
         <div class="m-3 text-blue-700">Bienvenue {{ userName }}</div>
@@ -10,9 +10,8 @@
           Sign Out
         </button>
       </div>
-      <div class="px-6 sm:px-0 max-w-sm">
+      <div v-if="!isLoggedIn" class="p-6 pb-0 max-w-sm">
         <button
-          v-if="!isLoggedIn"
           @click="goToLogin"
           type="button"
           class="text-white w-full bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between mr-2 mb-2"
@@ -43,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from './store/store.ts'
 import router from './router'
@@ -57,12 +56,33 @@ const userName = ref(state.user.name)
 const isLoggedIn = ref(state.user.loggedIn)
 
 const backgroundColor = computed(() => {
+  console.log('route', route.name)
+
   switch (route.name) {
     case 'WelcomePage':
       return 'bg-cyan-200'
     default:
-      return ''
+      return 'bg-cremeux'
   }
+})
+
+watch(
+  () => state.user.name,
+  (newValue) => {
+    userName.value = newValue
+  }
+)
+
+onMounted(() => {
+  document.body.className = backgroundColor.value
+})
+
+onUnmounted(() => {
+  document.body.className = ''
+})
+
+watch(backgroundColor, (newColor) => {
+  document.body.className = newColor
 })
 
 watch(
