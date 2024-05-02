@@ -2,7 +2,7 @@
 FROM node:18.17-alpine as builder
 
 # Définir le répertoire de travail
-WORKDIR /app
+WORKDIR /usr/src/app
 
 # Copier les fichiers de package et installer les dépendances
 COPY package*.json ./
@@ -11,7 +11,7 @@ RUN npm install --legacy-peer-deps
 # Copier le reste des fichiers de l'application
 COPY . .
 
-# Exclure les fichiers spec.ts
+# Exclure les fichiers spec.ts avant la construction pour éviter de les copier inutilement
 RUN find . -name "*.spec.ts" -type f -delete
 
 # Compiler l'application TypeScript
@@ -20,8 +20,12 @@ RUN npm run build
 # Étape de production, copie des fichiers nécessaires et nettoyage
 FROM node:18.17-alpine
 WORKDIR /app
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
+
+# Définir NODE_ENV sur production
+ENV NODE_ENV=production
+
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/node_modules ./node_modules
 
 # Exposer le port sur lequel l'application s'exécute
 EXPOSE 1605
