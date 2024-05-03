@@ -86,7 +86,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": ".husky/pre-commit"
+      "pre-commit": "backend/.husky/pre-commit"
     }
   }
 }
