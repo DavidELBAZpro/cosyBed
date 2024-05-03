@@ -12,6 +12,7 @@ async function bootstrap() {
     common_1.Logger.log(`Server is running on port ${process.env.PORT}`);
     common_1.Logger.log(`mongo: ${process.env.MONGO_URL}`);
     common_1.Logger.log(`node_env: ${process.env.NODE_ENV}`);
+    common_1.Logger.log(`this is a test`);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
