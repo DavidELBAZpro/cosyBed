@@ -1,0 +1,1 @@
+{"version":3,"file":"welcome.controller.js","sourceRoot":"","sources":["../../src/welcome/welcome.controller.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,2CAAgD;AAGzC,IAAM,iBAAiB,GAAvB,MAAM,iBAAiB;IAE5B,QAAQ;QACN,OAAO,EAAE,OAAO,EAAE,iCAAiC,EAAE,CAAA;IACvD,CAAC;CACF,CAAA;AALY,8CAAiB;AAE5B;IADC,IAAA,YAAG,GAAE;;;;iDAGL;4BAJU,iBAAiB;IAD7B,IAAA,mBAAU,EAAC,SAAS,CAAC;GACT,iBAAiB,CAK7B"}
