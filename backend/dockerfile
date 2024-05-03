@@ -11,9 +11,6 @@ RUN npm install --legacy-peer-deps
 # Copier le reste des fichiers de l'application
 COPY . .
 
-# Exclure les fichiers spec.ts avant la construction pour éviter de les copier inutilement
-RUN find . -name "*.spec.ts" -type f -delete
-
 # Compiler l'application TypeScript
 RUN npm run build
 
@@ -22,7 +19,7 @@ FROM node:18.17-alpine
 WORKDIR /app
 
 # Définir NODE_ENV sur production
-ENV NODE_ENV=production
+# ENV NODE_ENV=production PORT=1605 MONGO_URL=http://localhost:15
 
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/node_modules ./node_modules

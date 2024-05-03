@@ -11,8 +11,11 @@ async function bootstrap() {
   // Activer CORS
   app.enableCors()
   await app.listen(
-    (process.env.NODE_ENV = 'production' ? '1605' : '1606'),
+    process.env.NODE_ENV === 'production' ? process.env.PORT : '1606',
     '0.0.0.0',
   )
+  Logger.log(`Server is running on port ${process.env.PORT}`)
+  Logger.log(`mongo: ${process.env.MONGO_URL}`)
+  Logger.log(`node_env: ${process.env.NODE_ENV}`)
 }
 bootstrap()

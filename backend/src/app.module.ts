@@ -24,9 +24,14 @@ import { FileUploadModule } from './file-upload/file-upload.module'
     //   entities: [], // Vous devriez lister ici vos entités
     //   synchronize: true,
     // }),
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/db_ecommerce_app', {
-      serverSelectionTimeoutMS: 5000, // Réduisez le temps d'attente pour le test
-    }),
+    MongooseModule.forRoot(
+      process.env.NODE_ENV === 'production'
+        ? process.env.MONGO_URL
+        : 'mongodb://127.0.0.1:27017/db_ecommerce_app',
+      {
+        serverSelectionTimeoutMS: 5000, // Réduisez le temps d'attente pour le test
+      },
+    ),
     ProductsModule,
     ClientsModule,
     FileUploadModule,
