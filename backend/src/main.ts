@@ -17,5 +17,6 @@ async function bootstrap() {
   Logger.log(`Server is running on port ${process.env.PORT}`)
   Logger.log(`mongo: ${process.env.MONGO_URL}`)
   Logger.log(`node_env: ${process.env.NODE_ENV}`)
+  Logger.log(`this is a test`)
 }
 bootstrap()
