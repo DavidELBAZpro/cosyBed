@@ -22,7 +22,11 @@ const count = ref(101)
 
 // Fonction pour récupérer le message depuis le serveur
 const fetchMessage = async (): Promise<MessageResponse> => {
-  const response = await fetch('http://localhost:1605/welcome')
+  const response = await fetch(
+    process.env.NODE_ENV === 'production'
+      ? 'http://backend-service:1605/welcome'
+      : 'http://localhost:1605/welcome'
+  )
   if (!response.ok) {
     throw new Error('Network response was not ok')
   }

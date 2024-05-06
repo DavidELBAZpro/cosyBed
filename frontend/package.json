@@ -14,6 +14,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.12",
     "@tanstack/vue-query": "^5.29.0",
+    "consolidate": "^1.0.3",
     "firebase": "^10.11.1",
     "firebaseui": "^6.1.0",
     "flowbite": "^2.3.0",
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "@types/node-fetch": "^2.6.11",
+    "@types/vue": "^2.0.0",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/cli-plugin-typescript": "^5.0.8",
     "autoprefixer": "^10.4.19",

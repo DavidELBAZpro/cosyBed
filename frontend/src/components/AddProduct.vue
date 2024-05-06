@@ -268,10 +268,15 @@ const mutation = useMutation({
   mutationFn: async (data: FormData) => {
     isLoading = ref(true)
     setTimeout(() => {}, 10000)
-    const response = await fetch('http://localhost:1605/products/upload', {
-      method: 'POST',
-      body: data,
-    })
+    const response = await fetch(
+      process.env.NODE_ENV === 'production'
+        ? 'http://backend-service:1605/welcome'
+        : 'http://localhost:1605/welcome',
+      {
+        method: 'POST',
+        body: data,
+      }
+    )
     console.log('data sent to back', data)
 
     if (!response.ok) {

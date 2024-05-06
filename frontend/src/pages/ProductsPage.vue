@@ -57,7 +57,11 @@ const route = useRoute();
 const fetchProducts = async (): Promise<ProductInterface[]> => {
   const id = route.params.id;
   
-  const response = await fetch(`http://localhost:1605/products/${id}`)
+  const response = await fetch(
+    process.env.NODE_ENV === 'production'
+      ? 'http://backend-service:1605/welcome'
+      : 'http://localhost:1605/welcome'
+  )
   if (!response.ok) {
     throw new Error('No product found with this id: ' + "'" + id + "'")
   }

@@ -68,7 +68,11 @@ const goBack = () => {
 let ui = new firebaseui.auth.AuthUI(firebase.auth())
 const uiConfig = {
   signInFlow: 'popup',
-  signInSuccessUrl: 'http://localhost:5173/products',
+  signInSuccessUrl: 
+    process.env.NODE_ENV === 'production'
+      ? 'http://backend-service:1605/welcome'
+      : 'http://localhost:1605/welcome'
+  ,
   signInOptions: [
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
   ],
